@@ -31,8 +31,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textShare = findViewById(R.id.edtShareText);
 
         buttonWebsite = findViewById(R.id.btnWebUri);
-        buttonWebsite = findViewById(R.id.btnLocationUri);
-        buttonWebsite = findViewById(R.id.btnShareText);
+        buttonWebsite.setOnClickListener(this);
+        buttonLocation = findViewById(R.id.btnLocationUri);
+        buttonLocation.setOnClickListener(this);
+        buttonText = findViewById(R.id.btnShareText);
+        buttonText.setOnClickListener(this);
     }
 
     public void openDialPhone (View view){
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.edtWebUri:
+            case R.id.btnWebUri:
                 Intent openWebsite = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(websiteUri.getText().toString()));
                 startActivity(openWebsite);
