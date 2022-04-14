@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText phoneNumber;
@@ -38,36 +41,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonText.setOnClickListener(this);
     }
 
-    public void openDialPhone (View view){
-        Intent dialPhone = new Intent(Intent.ACTION_DIAL,
-                Uri.parse("tel:" + phoneNumber.getText().toString()));
-        startActivity(dialPhone);
-    }
+
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnWebUri:
-                Intent openWebsite = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(websiteUri.getText().toString()));
-                startActivity(openWebsite);
+            case R.id.btnPhoneNumber:
+                if (phoneNumber.getText().toString()==null || phoneNumber.getText().toString().trim().equals("")){
+                    Toast.makeText(getBaseContext(), "Kolom Tidak Boleh kosong", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent dialPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber.getText().toString()));
+                    startActivity(dialPhone);
+                }
                 break;
+            case R.id.btnWebUri:
+                if (websiteUri.getText().toString()==null || websiteUri.getText().toString().trim().equals("")) {
+                    Toast.makeText(getBaseContext(), "Kolom Tidak Boleh kosong", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    String url = websiteUri.getText().toString();
+                    if (!url.startsWith("http://") && !url.startsWith("http://")) {
+                        url = "http://" + url;
+                        Intent openWebsite = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(openWebsite);
+                        break;
+                    }
+                }
 
             case R.id.btnLocationUri:
-                Intent openLocation = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("geo:0,0?q=" +
-                                locationUri.getText().toString()));
-                startActivity(openLocation);
+                if (locationUri.getText().toString()==null || locationUri.getText().toString().trim().equals("")){
+                    Toast.makeText(getBaseContext(),"Kolom Tidak Boleh kosong", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent openLocationuri = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + locationUri.getText().toString()));
+                    startActivity(openLocationuri);
+                    openLocationuri = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("geo:0,0?q=" +
+                                    locationUri.getText().toString()));
+                    startActivity(openLocationuri);
+
+                }
                 break;
             case R.id.btnShareText:
-                ShareCompat.IntentBuilder
-                        .from(this)
-                        .setType("text/plan")
-                        .setChooserTitle("Share this text with : ")
-                        .setText(textShare.getText().toString())
-                        .startChooser();
+                if (textShare.getText().toString()==null || textShare.getText().toString().trim().equals("")){
+                    Toast.makeText(getBaseContext(),"Kolom Tidak Boleh kosong", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    ShareCompat.IntentBuilder.from(this).setType("text/plan").setChooserTitle("Membuka : ").setText(textShare.getText().toString()).startChooser();
+                }
                 break;
-
         }
     }
 }
+
+
+
+
+
